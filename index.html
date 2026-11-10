@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kenya Historia Knowledge</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="index.js"></script>
+</head>
+<body>
+  <!-- Big Five Background -->
+  <div class="bigfive-bg" id="bigfiveBg"></div>
+
+  <header>
+    <h1>🇰🇪 Kenya Historia Knowledge</h1>
+    <nav id="mainNav">
+      <button onclick="showScreen('home')">Home</button>
+      <button onclick="showScreen('browse')">Browse Eras</button>
+      <button onclick="showScreen('deck')">My Deck</button>
+      <button onclick="showScreen('play')">Play</button>
+      <button onclick="showScreen('profile')">Profile</button>
+      <button id="logoutBtn" onclick="logout()" style="display:none;">Logout</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <div id="home" class="screen">
+      <div id="guestBanner" style="display:none; background:#bb0000; color:white; text-align:center; padding:0.7rem 1rem; border-radius:8px; margin-bottom:1.2rem; font-weight:600;">
+        You are playing as <strong>Guest</strong> — Your progress will not be saved.
+        <a href="registration.html" style="color:#f0c040; margin-left:10px; text-decoration:underline;">Register to save progress</a>
+      </div>
+
+      <h2>Welcome, <span id="welcomeName"></span>!</h2>
+      <p style="margin:0.8rem 0 1.5rem;">Test & grow your knowledge of Kenyan History across four key eras.</p>
+
+      <div class="card-grid">
+        <div class="era-card" onclick="startEra('precolonial')">
+          <h3>Pre-Colonial</h3>
+          <p>Early societies, kingdoms & migrations before European contact.</p>
+        </div>
+        <div class="era-card" onclick="startEra('trade')">
+          <h3>Trade</h3>
+          <p>Coastal trade, Swahili city-states & Indian Ocean networks.</p>
+        </div>
+        <div class="era-card" onclick="startEra('resistance')">
+          <h3>Colonial Resistance</h3>
+          <p>Uprisings, Mau Mau & the fight against colonial rule.</p>
+        </div>
+        <div class="era-card" onclick="startEra('independence')">
+          <h3>Independence</h3>
+          <p>Path to self-rule, key leaders & nation building.</p>
+        </div>
+      </div>
+
+      <button class="btn" style="margin-top:2rem;" onclick="showScreen('play')">🎲 Roll Dice & Play</button>
+    </div>
+
+    <!-- BROWSE -->
+    <div id="browse" class="screen">
+      <h2>Browse Historical Eras</h2>
+      <p>Select an era to view details and start learning.</p>
+      <div class="card-grid" id="eraDetails"></div>
+    </div>
+
+    <!-- DECK -->
+    <div id="deck" class="screen">
+      <h2>My Custom Deck</h2>
+      <p>Build a personal set of eras you want to focus on.</p>
+      <div id="deckList" style="margin:1.5rem 0;"></div>
+      <button class="btn" onclick="saveDeck()">💾 Save Deck</button>
+      <button class="btn btn-outline" style="margin-left:0.5rem;" onclick="clearDeck()">Clear</button>
+    </div>
+
+    <!-- PLAY -->
+    <div id="play" class="screen">
+      <h2>Play Mode</h2>
+
+      <div class="dice-area">
+        <div class="dice" id="diceFace">?</div>
+        <br>
+        <button class="btn" id="rollBtn" onclick="rollDice()">Roll the 4-sided Dice</button>
+        <p id="diceResult" style="margin-top:0.8rem; font-weight:600;"></p>
+      </div>
+
+      <div id="quizArea" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem;">
+          <span class="level-badge">Level <span id="currentLevel">1</span></span>
+          <span>Score: <strong id="score">0</strong></span>
+        </div>
+
+        <div class="progress-bar">
+          <div id="progressFill" style="width:0%"></div>
+        </div>
+
+        <div class="question-box">
+          <h3 id="questionText">Question will appear here</h3>
+          <div class="options" id="options"></div>
+          <p id="feedback" style="margin-top:1rem; font-weight:600;"></p>
+          <button class="btn" id="nextBtn" style="display:none;" onclick="nextQuestion()">Next Question</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div id="profile" class="screen">
+      <h2>Player Profile</h2>
+
+      <p id="guestNote" style="display:none; color:#bb0000; margin-bottom:1rem; font-weight:600;">
+        You are playing as Guest. Your progress will not be saved.
+      </p>
+
+      <div class="profile-stats">
+        <div class="stat-box">
+          <div class="num" id="statMatches">0</div>
+          <div class="label">Matches Played</div>
+        </div>
+        <div class="stat-box">
+          <div class="num" id="statCorrect">0</div>
+          <div class="label">Correct Answers</div>
+        </div>
+        <div class="stat-box">
+          <div class="num" id="statAccuracy">0%</div>
+          <div class="label">Accuracy</div>
+        </div>
+        <div class="stat-box">
+          <div class="num" id="statHighestLevel">1</div>
+          <div class="label">Highest Level</div>
+        </div>
+        <div class="stat-box">
+          <div class="num" id="statWeakest">-</div>
+          <div class="label">Weakest Era</div>
+        </div>
+      </div>
+
+    <!-- TOP PLAYER CARD -->
+      <div class="top-player-card" style="margin-top:2rem;">
+        <h3>🏆 Top 3 Players</h3>
+        <div id="topPlayersList"><p>Loading...</p></div>
+      </div>
+
+      <p style="margin-top:1.5rem;"><strong>Name:</strong> <span id="profName"></span></p>
+      <p><strong>Joined:</strong> <span id="profJoined"></span></p>
+
+      <h3 style="margin-top:1.8rem;">Match History</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Era</th>
+            <th>Level</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer>
+    Kenya Historia Knowledge · Educating through play · Progress saved locally
+  </footer>
+
+  <script>
+    const ERAS = {
+      precolonial: {
+        name: "Pre-Colonial",
+        color: "#006600",
+        description: "Early societies, Bantu migrations, kingdoms such as Wanga, and traditional governance before European arrival."
+      },
+      trade: {
+        name: "Trade",
+        color: "#bb0000",
+        description: "Indian Ocean trade, Swahili city-states (Mombasa, Lamu, Malindi), Arab and Persian influence, and the rise of coastal commerce."
+      },
+      resistance: {
+        name: "Colonial Resistance",
+        color: "#000000",
+        description: "Armed and political resistance against British rule, including the Mau Mau uprising, Nandi resistance, and other freedom struggles."
+      },
+      independence: {
+        name: "Independence",
+        color: "#f0c040",
+        description: "The road to self-rule, Lancaster House conferences, key leaders (Kenyatta, Oginga Odinga, Mboya) and the birth of the Republic."
+      }
+    };
+
+    const QUESTIONS = {
+      precolonial: [
+        { q: "Which group is associated with the early Bantu migrations into present-day Kenya?", options: ["Nilotes", "Cushites", "Bantu", "Arabs"], a: 2, level: 1 },
+        { q: "The Wanga kingdom was mainly located in which region?", options: ["Coast", "Western Kenya", "Central Kenya", "Northern Kenya"], a: 1, level: 1 },
+        { q: "What was a major economic activity of pre-colonial coastal communities?", options: ["Cattle herding only", "Fishing and trade", "Mining only", "Industrial manufacturing"], a: 1, level: 2 },
+        { q: "Traditional councils of elders were important for:", options: ["Foreign diplomacy only", "Conflict resolution & governance", "Building railways", "Tax collection for Britain"], a: 1, level: 2 },
+        { q: "The Maasai are primarily associated with which livelihood?", options: ["Fishing", "Pastoralism", "Iron smelting", "Long-distance caravan trade"], a: 1, level: 3 },
+        { q: "Which pre-colonial community is known for advanced iron-working?", options: ["Kikuyu", "Luo", "Abagusii (Kisii)", "Somali"], a: 2, level: 3 },
+        { q: "The concept of 'age-sets' was particularly important among:", options: ["Swahili traders", "Maasai and Kalenjin", "Arab settlers", "Portuguese"], a: 1, level: 4 },
+        { q: "Which statement best describes pre-colonial Kenyan societies?", options: ["They were all centralised kingdoms", "They had diverse political systems from decentralised to centralised", "They had no trade networks", "They used a single currency"], a: 1, level: 4 },
+        { q: "The Nabongo was the traditional ruler of which community?", options: ["Kikuyu", "Luo", "Wanga (Luhya)", "Kamba"], a: 2, level: 5 },
+        { q: "Which of these was a major reason for Bantu migration?", options: ["Search for iron only", "Population pressure, search for fertile land and iron", "Escape from Portuguese", "Religious pilgrimage"], a: 1, level: 5 },
+        { q: "The institution of 'Orkoiyot' was a spiritual and military leader among the:", options: ["Maasai", "Nandi (Kalenjin)", "Luo", "Swahili"], a: 1, level: 6 },
+        { q: "Which pre-colonial trade item was highly valued and often used as currency in the interior?", options: ["Cowrie shells and iron hoes", "Paper money", "Gold coins only", "Salt from Europe"], a: 0, level: 6 }
+      ],
+      trade: [
+        { q: "Which ocean was central to early Kenyan coastal trade?", options: ["Atlantic", "Indian Ocean", "Pacific", "Arctic"], a: 1, level: 1 },
+        { q: "Mombasa was an important:", options: ["Inland farming centre", "Swahili city-state and port", "Colonial capital only", "Desert oasis"], a: 1, level: 1 },
+        { q: "The main language of coastal trade culture was:", options: ["Kikuyu", "Luo", "Kiswahili", "English"], a: 2, level: 2 },
+        { q: "Which items were commonly exported from the East African coast?", options: ["Ivory, gold, slaves", "Cars and electronics", "Wheat and barley", "Coal"], a: 0, level: 2 },
+        { q: "Portuguese influence on the coast began around:", options: ["10th century", "15th-16th century", "19th century", "20th century"], a: 1, level: 3 },
+        { q: "The city of Lamu is famous for its:", options: ["Modern skyscrapers", "Swahili architecture and UNESCO status", "Oil refineries", "Gold mines"], a: 1, level: 3 },
+        { q: "Omani Arabs took control of the coast mainly in the:", options: ["12th century", "17th-18th century", "20th century", "5th century"], a: 1, level: 4 },
+        { q: "The term 'Swahili' originally referred to:", options: ["A single ethnic group only", "Coastal people and culture shaped by trade", "A colonial invention", "A mountain community"], a: 1, level: 4 },
+        { q: "Fort Jesus in Mombasa was built by the:", options: ["British", "Portuguese", "Omani Arabs", "Germans"], a: 1, level: 5 },
+        { q: "Which Chinese explorer is known to have visited the East African coast in the 15th century?", options: ["Marco Polo", "Zheng He", "Ibn Battuta", "Vasco da Gama"], a: 1, level: 5 },
+        { q: "The golden age of Swahili city-states is generally placed between:", options: ["10th-15th centuries", "18th-19th centuries", "3rd-5th centuries", "20th century"], a: 0, level: 6 },
+        { q: "Which commodity from the interior was crucial for the coastal trade with Asia and the Middle East?", options: ["Tea and coffee", "Ivory and rhino horn", "Maize", "Cotton only"], a: 1, level: 6 }
+      ],
+      resistance: [
+        { q: "The Mau Mau uprising mainly took place in the:", options: ["1950s", "1920s", "1890s", "1970s"], a: 0, level: 1 },
+        { q: "Dedan Kimathi was a leader of:", options: ["The Portuguese", "The Mau Mau", "The Imperial British East Africa Company", "The UN"], a: 1, level: 1 },
+        { q: "The Nandi resistance was led by:", options: ["Jomo Kenyatta", "Koitalel Arap Samoei", "Tom Mboya", "Daniel arap Moi"], a: 1, level: 2 },
+        { q: "British colonial rule in Kenya formally began after:", options: ["The Berlin Conference & subsequent declarations", "World War II", "Independence", "The discovery of oil"], a: 0, level: 2 },
+        { q: "The Kapenguria Six included:", options: ["Only British officials", "Kenyatta and other nationalists", "Portuguese traders", "Omani sultans"], a: 1, level: 3 },
+        { q: "A major cause of African resistance was:", options: ["Land alienation and forced labour", "Too much democracy", "High oil prices", "Lack of railways"], a: 0, level: 3 },
+        { q: "The Kenya Land and Freedom Army is another name associated with:", options: ["The colonial police", "Mau Mau fighters", "The Portuguese army", "UN peacekeepers"], a: 1, level: 4 },
+        { q: "Which method was NOT typical of colonial resistance?", options: ["Armed struggle", "Political organisation", "Passive collaboration only", "Cultural preservation"], a: 2, level: 4 },
+        { q: "Who was the spiritual leader often associated with the early phases of Mau Mau?", options: ["Jomo Kenyatta", "Bildad Kaggia", "Field Marshal Dedan Kimathi", "Mekatilili wa Menza"], a: 2, level: 5 },
+        { q: "The Giriama resistance against the British was led by:", options: ["Koitalel", "Mekatilili wa Menza", "Lukaito", "Waiyaki wa Hinga"], a: 1, level: 5 },
+        { q: "The 'Devonshire White Paper' of 1923 declared that:", options: ["Kenya belonged to the white settlers", "African interests should be paramount", "Indians should rule Kenya", "The coast should be separate"], a: 1, level: 6 },
+        { q: "Which of these was a major consequence of the Mau Mau uprising?", options: ["Immediate independence in 1952", "Declaration of a State of Emergency and later constitutional reforms", "End of all African political activity", "Portuguese re-colonisation"], a: 1, level: 6 }
+      ],
+      independence: [
+        { q: "Kenya gained independence in:", options: ["1952", "1963", "1978", "1992"], a: 1, level: 1 },
+        { q: "The first President of Kenya was:", options: ["Daniel arap Moi", "Jomo Kenyatta", "Mwai Kibaki", "Uhuru Kenyatta"], a: 1, level: 1 },
+        { q: "The Lancaster House conferences were held to discuss:", options: ["Trade with China", "Kenya's constitution and independence", "Building the railway", "Oil exploration"], a: 1, level: 2 },
+        { q: "KANU stands for:", options: ["Kenya African National Union", "Kenya Army National Unit", "Kenya Agricultural Network", "Kenya Airways National Union"], a: 0, level: 2 },
+        { q: "Tom Mboya was known for his role in:", options: ["Only military affairs", "Trade unionism and politics", "Colonial administration", "Religious leadership only"], a: 1, level: 3 },
+        { q: "Kenya became a Republic in:", options: ["1963", "1964", "1970", "1982"], a: 1, level: 3 },
+        { q: "The motto 'Harambee' means:", options: ["Divide and rule", "Let's pull together", "Independence now", "One party state"], a: 1, level: 4 },
+        { q: "Which leader was a key figure in both independence and early nation-building?", options: ["Jomo Kenyatta", "Vasco da Gama", "Lord Delamere", "Queen Victoria"], a: 0, level: 4 },
+        { q: "Who was Kenya's first Vice President?", options: ["Daniel arap Moi", "Jaramogi Oginga Odinga", "Tom Mboya", "Mwai Kibaki"], a: 1, level: 5 },
+        { q: "The first Lancaster House Conference on Kenya was held in:", options: ["1960", "1957", "1963", "1945"], a: 0, level: 5 },
+        { q: "Which constitution made Kenya a Republic?", options: ["1963 Independence Constitution", "1964 Constitution", "2010 Constitution", "1969 Constitution"], a: 1, level: 6 },
+        { q: "The phrase 'Uhuru na Kazi' was popularised to mean:", options: ["Freedom and work/responsibility", "Freedom and land only", "Unity and peace", "One party forever"], a: 0, level: 6 }
+      ]
+    };
+
+    function createBigFiveBackground() {
+      const container = document.getElementById("bigfiveBg");
+      if (!container) return;
+
+      const animals = [
+        { emoji: "🦁", className: "lion" },
+        { emoji: "🐆", className: "leopard" },
+        { emoji: "🐘", className: "elephant" },
+        { emoji: "🦏", className: "rhino" },
+        { emoji: "🐃", className: "buffalo" }
+      ];
+
+      for (let i = 0; i < 12; i++) {
+        const animal = animals[i % animals.length];
+        const el = document.createElement("div");
+        el.className = `bg-animal ${animal.className}`;
+        el.textContent = animal.emoji;
+        el.style.left = Math.random() * 100 + "%";
+        el.style.animationDuration = (18 + Math.random() * 14) + "s";
+        el.style.animationDelay = (Math.random() * 12) + "s";
+        container.appendChild(el);
+      }
+    }
+
+    window.addEventListener("load", createBigFiveBackground);
+  </script>
+</body>
+</html>

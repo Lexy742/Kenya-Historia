@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration</title>
+  <link rel="stylesheet" href="style.css">
+  
+</head>
+<body>
+  <header>
+    <h1>🇰🇪 Kenya Historia Knowledge - Registration</h1>
+
+  </header>
+
+  <main>
+    <div id="registerScreen" class="screen active">
+    <div class="auth-box">
+      <h2 style="text-align:center; margin-bottom:1.5rem;">Create Account</h2>
+      
+      <div class="input-box">
+        <label>Username</label>
+        <input type="text" id="regUser" placeholder="4-8 letters only" maxlength="8">
+        <small id="regUserError" class="error"></small>
+      </div>
+
+      <div class="input-box">
+        <label>Email</label>
+        <input type="email" id="regEmail" placeholder="Enter your email">
+        <small id="regEmailError" class="error"></small>
+      </div>
+
+      <div class="input-box">
+        <label>Phone Number</label>
+        <input type="tel" id="regPhone" placeholder="e.g. 0712345678" maxlength="13">
+        <small id="regPhoneError" class="error"></small>
+      </div>
+
+      <div class="input-box">
+        <label>Password</label>
+        <input type="password" id="regPass" placeholder="Exactly 8 characters" maxlength="8">
+        <small id="regPassError" class="error"></small>
+      </div>
+      
+      <button class="btn" style="width:100%" onclick="register()">Create Account</button>
+      
+      <p style="text-align:center; margin-top:1rem; font-size:0.9rem;">
+        Already have an account? <a href="login.html">Login</a> 
+      </p>
+    </div>
+  </div>
+</main>
+  <footer>
+    Kenya Historia Knowledge · Educating through play · Progress saved locally
+  </footer>
+  <script src="index.js"></script>
+</body>
+</html>

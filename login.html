@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kenya Historia Knowledge</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🇰🇪 Kenya Historia Knowledge</h1>
+    <nav id="mainNav">
+      <button onclick="showScreen('home')">Home</button>
+      <button onclick="showScreen('browse')">Browse Eras</button>
+      <button onclick="showScreen('deck')">My Deck</button>
+      <button onclick="showScreen('play')">Play</button>
+      <button onclick="showScreen('profile')">Profile</button>
+      <button id="logoutBtn" onclick="logout()" style="display:none;">Logout</button>
+    </nav>
+  </header>
+
+  <main>
+    <div id="loginScreen" class="screen active">
+    <div class="auth-box">
+      <h2 style="text-align:center; margin-bottom:1.5rem;">Login</h2>
+      
+     <div class="input-box">
+        <label>Username</label>
+        <input type="text" id="loginUser" placeholder="Enter username" maxlength="8">
+        <small id="loginUserError" class="error"></small>
+      </div>
+
+      <div class="input-box">
+        <label>Password</label>
+        <input type="password" id="loginPass" placeholder="Enter password" maxlength="8">
+        <small id="loginPassError" class="error"></small>
+      </div>
+      
+      <button class="btn" style="width:100%" onclick="login()">Login</button>
+
+<!-- Play as Guest button -->
+      <button class="btn btn-outline" style="width:100%; margin-top:0.8rem;" onclick="playAsGuest()">
+  Play as Guest
+      </button>
+
+    <p style="text-align:center; margin-top:1rem; font-size:0.9rem;">
+  No account? <a href="registration.html">Register</a>
+    </p>
+ 
+    </div>
+  </div>
+</main>
+  <footer>
+      Kenya Historia Knowledge · Educating through play · Progress saved locally
+  </footer>
+  <script src="index.js"></script>
+</body>
+</html>
